@@ -7,8 +7,6 @@ interface Props {
 }
 
 export default function CompletionScreen({ session, saveState, onRetry }: Props) {
-  const correctCount = session.trials.filter((t) => t.isCorrect).length;
-
   return (
     <div className="card">
       <h1>실험이 종료되었습니다</h1>
@@ -17,9 +15,6 @@ export default function CompletionScreen({ session, saveState, onRetry }: Props)
       <div className="summary">
         <p>
           참가자 ID: <strong>{session.participantId}</strong>
-        </p>
-        <p>
-          총 {session.trials.length}개 시행 중 {correctCount}개 정답
         </p>
       </div>
 
