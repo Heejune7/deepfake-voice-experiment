@@ -1,0 +1,14 @@
+:root {
+  color-scheme: light;
+  font-family: 'Pretendard', -apple-system, 'Malgun Gothic', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f5f7;
+  color: #1a1a1a;
+}
