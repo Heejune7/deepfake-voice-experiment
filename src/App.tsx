@@ -42,10 +42,17 @@ export default function App() {
     };
     setSession(finishedSession);
     setScreen('complete');
+    attemptSave(finishedSession);
+  };
+
+  const attemptSave = (data: SessionData) => {
     setSaveState('saving');
-    saveSession(finishedSession)
+    saveSession(data)
       .then(() => setSaveState('saved'))
-      .catch(() => setSaveState('error'));
+      .catch((error) => {
+        console.error('[saveSession] failed', error);
+        setSaveState('error');
+      });
   };
 
   return (
@@ -70,7 +77,11 @@ export default function App() {
       )}
 
       {screen === 'complete' && session && (
-        <CompletionScreen session={session} saveState={saveState} />
+        <CompletionScreen
+          session={session}
+          saveState={saveState}
+          onRetry={() => attemptSave(session)}
+        />
       )}
     </div>
   );

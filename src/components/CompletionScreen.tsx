@@ -3,9 +3,10 @@ import type { SessionData } from '../types';
 interface Props {
   session: SessionData;
   saveState: 'saving' | 'saved' | 'error';
+  onRetry: () => void;
 }
 
-export default function CompletionScreen({ session, saveState }: Props) {
+export default function CompletionScreen({ session, saveState, onRetry }: Props) {
   const correctCount = session.trials.filter((t) => t.isCorrect).length;
 
   return (
@@ -25,9 +26,14 @@ export default function CompletionScreen({ session, saveState }: Props) {
       {saveState === 'saving' && <p className="hint">결과를 저장하는 중입니다...</p>}
       {saveState === 'saved' && <p className="hint">결과가 저장되었습니다.</p>}
       {saveState === 'error' && (
-        <p className="hint error">
-          결과 저장 중 문제가 발생했습니다. 연구자에게 참가자 ID를 알려주세요.
-        </p>
+        <>
+          <p className="hint error">
+            결과 저장 중 문제가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.
+          </p>
+          <button className="primary" onClick={onRetry}>
+            다시 시도
+          </button>
+        </>
       )}
     </div>
   );
