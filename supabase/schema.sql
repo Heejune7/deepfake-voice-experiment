@@ -42,3 +42,18 @@ create policy "anon can insert trial_results"
 grant usage on schema public to anon;
 grant insert on sessions to anon;
 grant insert on trial_results to anon;
+
+-- 지정된 관리자 이메일로 로그인한 사용자만 전체 결과를 조회할 수 있도록 허용
+create policy "admin can select sessions"
+  on sessions for select
+  to authenticated
+  using (auth.jwt() ->> 'email' = 'june@cup.ac.kr');
+
+create policy "admin can select trial_results"
+  on trial_results for select
+  to authenticated
+  using (auth.jwt() ->> 'email' = 'june@cup.ac.kr');
+
+grant usage on schema public to authenticated;
+grant select on sessions to authenticated;
+grant select on trial_results to authenticated;
