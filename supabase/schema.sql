@@ -37,3 +37,8 @@ create policy "anon can insert trial_results"
   on trial_results for insert
   to anon
   with check (true);
+
+-- RLS 정책만으로는 부족하며, 테이블 단위 권한도 별도로 부여해야 합니다.
+grant usage on schema public to anon;
+grant insert on sessions to anon;
+grant insert on trial_results to anon;

@@ -7,22 +7,21 @@ export async function saveSession(session: SessionData): Promise<void> {
     return;
   }
 
-  const { data: sessionRow, error: sessionError } = await supabase
-    .from('sessions')
-    .insert({
-      participant_id: session.participantId,
-      started_at: session.startedAt,
-      finished_at: session.finishedAt,
-    })
-    .select('id')
-    .single();
+  const sessionId = crypto.randomUUID();
 
-  if (sessionError || !sessionRow) {
-    throw sessionError ?? new Error('세션 저장에 실패했습니다.');
+  const { error: sessionError } = await supabase.from('sessions').insert({
+    id: sessionId,
+    participant_id: session.participantId,
+    started_at: session.startedAt,
+    finished_at: session.finishedAt,
+  });
+
+  if (sessionError) {
+    throw sessionError;
   }
 
   const trialRows = session.trials.map((trial) => ({
-    session_id: sessionRow.id,
+    session_id: sessionId,
     trial_index: trial.trialIndex,
     ai_file: trial.aiFile,
     real_file: trial.realFile,
